@@ -15,7 +15,7 @@ public class Main {
         // This welcome the users on Board
 
         List<String> transactionType = Arrays.asList("Balance".toLowerCase(), "Debit".toLowerCase());
-        System.out.println("Enter transaction type :" + "Balance / Debit");
+        System.out.println("Enter transaction type:" + " Balance / Debit");
         String userTransactionType = scanner.nextLine().toLowerCase();
         Boolean balanceCheck = false;
         Boolean debitTranscation = false;
@@ -27,6 +27,8 @@ public class Main {
             } else if (userTransactionType.equals(transactionType.get(1))) {
                 debitTranscation = true;
                 System.out.println("Debit Transcation type selected");
+            }else{
+                System.out.println("Transaction type does not exist");
             }
 
         }
@@ -41,11 +43,9 @@ public class Main {
 
         // customers.containsKey("Abdusamad");
         // 4. We ask the user to input their name so we compare them with what we have//
-
+        String userName;
         if (balanceCheck) {
-
-            String userName;
-
+        
             // 5.We need to excute our logic in try and catch lock//
             try {
                 System.out.println("Please enter your name to get Balance");
@@ -71,8 +71,33 @@ public class Main {
                 System.out.println("Error: " + e.getMessage());
 
             }
-            scanner.close();
+          
+        }else {
+            System.out.println("Please Enter Your name to Proceed");
+            try {
+                if(scanner.hasNextLine()){
+                    userName = scanner.nextLine();
+                    if(customers.containsKey(userName)){
+                        System.out.println("Dear " + userName + " Please Enter the amount to debit");
+                        double availableBalance = customers.get(userName);
+                        double amount = scanner.nextDouble();
+                        double newAmount = amount + 10.00 ;
+                        if(newAmount < availableBalance){
+                            double customerBalance = availableBalance - amount;
+                            System.out.println("Transaction Successful");
+                            System.out.println("Dear " + userName.toUpperCase() + " Your Available Balance is : #" + String.format("%.2f", +  customerBalance));
+                        }else{
+                            System.out.println("Insufficient Funds: Transaction Failed");
+                        }
+                    }else{
+                        System.out.println("Account does not exist");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
         }
+        scanner.close();
         // 9 Exit the Program of get Balance //
     }
 }
